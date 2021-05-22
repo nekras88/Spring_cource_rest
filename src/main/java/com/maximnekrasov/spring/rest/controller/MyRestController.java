@@ -27,26 +27,32 @@ public class MyRestController {
 
 
     @GetMapping("/employees/{id}")
-    public Employee getEmployee(@PathVariable int id){
-    Employee employee = employeeService.getEmployee(id);
+    public Employee getEmployee(@PathVariable int id) {
+        Employee employee = employeeService.getEmployee(id);
 
-    if(employee==null){
-        throw new NoSuchEmployeeException("There is no employee with ID = "+
-                id + "in Database");
+        if (employee == null) {
+            throw new NoSuchEmployeeException("There is no employee with ID = " +
+                    id + "in Database");
+
+        }
+
+
+        return employee;
+
 
     }
 
-
-    return employee;
-
+    @PostMapping("/employees")
+    public Employee addNewEmployee(@RequestBody Employee employee){
+    employeeService.saveEmployee(employee);
+    return  employee;
 
     }
-    @ExceptionHandler
-    public ResponseEntity<EmployeeIncorrectData> handleException(NoSuchEmployeeException exception){
-    EmployeeIncorrectData data = new EmployeeIncorrectData();
-    data.setInfo(exception.getMessage());
-    return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
 
+@PutMapping("/employees")
+    public Employee updateEmployee(@RequestBody Employee employee){
+    employeeService.saveEmployee(employee);
+    return  employee;
     }
 
 }
